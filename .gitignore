@@ -12,3 +12,5 @@
 *.pdb
 *.tlog
 /01/Debug
+/02/.vs
+/02/Debug

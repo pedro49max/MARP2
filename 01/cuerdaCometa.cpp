@@ -1,4 +1,3 @@
-//Pedro Tobalina Navarro
 #include<fstream>
 #include<iostream>
 #include<vector>
