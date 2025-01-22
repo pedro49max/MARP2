@@ -4,3 +4,11 @@
 *.vcxproj
 *.filters
 *.user
+*.exe
+*.recipe
+*.ilk
+*.log
+*.lastbuildstate
+*.pdb
+*.tlog
+/01/Debug
