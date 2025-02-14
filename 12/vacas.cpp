@@ -16,26 +16,36 @@ void comeDevoradora(const vector<int>& cubos, int &ini, int &fin) {
         fin--;
 }
 
-int resuelve(const vector<int>& cubos, vector<vector<int>>&dp, int ini, int fin, int comida, bool devoradora) {
-    //cout << "comienzo iteracion con ini=" << ini << " y fin=" << fin << endl;
-    int result;
-    if (devoradora) {
-        //cout << "STACK OVERFLOW con " << ini << " " << fin << endl;
-        int nextIni = ini, nextFin = fin;
-        comeDevoradora(cubos, nextIni, nextFin);
-        result = resuelve(cubos,dp, nextIni, nextFin, comida, false);
+int resuelve(const vector<int>& cubos, vector<vector<int>>&dp, int ini, int fin, int profundidad) {
+    if (dp[ini][fin] == -1) {
+        /*for (int jk = 0; jk < profundidad; jk++)
+            cout << "   ";
+        cout << "comienzo iteracion con ini=" << ini << " y fin=" << fin << endl;*/
+        int result;
+        if (ini >= fin || ini >= cubos.size() || fin < 0) {
+            result = cubos[ini];
+        }
+        else if (fin - ini == 1)
+            result = max(cubos[ini], cubos[fin]);
+        else {
+            int newIni = ini + 1, newFin = fin;
+            comeDevoradora(cubos, newIni, newFin);
+            int izq = cubos[ini] + resuelve(cubos, dp, newIni, newFin, profundidad + 1);
+
+            newIni = ini, newFin = fin - 1;
+            comeDevoradora(cubos, newIni, newFin);
+            int der = cubos[fin] + resuelve(cubos, dp, newIni, newFin, profundidad + 1);
+            result = max(dp[ini][fin], max(izq, der));
+        }
+        dp[ini][fin] = result;
+        /*for (int jk = 0; jk < profundidad; jk++)
+            cout << "   ";
+        cout << "fin iteracion dp[ini][fin] =" << dp[ini][fin] << endl;*/
+        return result;
     }
-    else if (ini >= fin || ini >= cubos.size() || fin <0)
-        result = comida + cubos[ini];
-    else if (fin - ini == 1)
-        result = comida + max(cubos[ini], cubos[fin]);
     else {
-        result = max(resuelve(cubos,dp, ini + 1, fin, comida + cubos[ini], true), resuelve(cubos,dp, ini, fin - 1, comida + cubos[fin], true));
+        return dp[ini][fin];
     }
-    if (dp[ini][fin] != -1 && result > dp[ini][fin])
-        cout << "FUCK" << endl;
-    dp[ini][fin] = result;
-    return result;
 }
 
 
@@ -47,14 +57,14 @@ void solve() {
             cin >> cubos[i];
         }
         vector<vector<int>>dp(N, vector<int>(N, -1));
-        cout << resuelve(cubos, dp,0, N - 1, 0, false) << endl;
+        cout << resuelve(cubos, dp,0, N - 1, 0) << endl;
     }
 }
 
 int main() {
 #ifndef DOMJUDGE
     std::ifstream in("in.txt");
-    auto cinbuf = std::cin.rdbuf(in.rdbuf()); //save old buf and redirect std::cin to casos.txt
+    auto cinbuf = std::cin.rdbuf(in.rdbuf());
 #endif
     solve();
     return 0;
