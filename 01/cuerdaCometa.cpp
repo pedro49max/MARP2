@@ -5,6 +5,43 @@
 #include <climits>
 using namespace std;
 
+/*
+RECURSION
+Parametros:
+    i es el index de cordel
+    j es la longitud a la que quiero llegar con el cordel
+    dp_ways es el vector que guarda el numero de formas de llegar a la lonjitud j
+    dp_min_cords es el vector que guarda el numero minimo de cordeles para llegar a a longitud j
+    dp_min_cost es el vector que guarda el coste minimo para llegar a la longitid j
+Rangos:
+    los cordeles van del 0 al n
+    los vectores soluion van del 0 a L+1
+Casos base: 
+    if(j > legths[i] || i == n) break;
+Casos recursivos:
+    if(j<=leghts[i] && i <n)
+        calculate vector values at j
+        j++
+
+*/
+/*
+IMPLEMENACION
+Recursivo: 
+    Como relleno el vector:
+        Primero itero por los cordeles, del 1 al n, y despues con cada cordel voy iterndo desde
+        el final de la longitud desada hasta la distancia del corel, para asi poder aÃ±adir al punto
+        en cuestion el valor de lo que habia antes del cordel mÃ¡s lo del cordel
+*/
+/*
+COSTE DE RELLENADO DE LA MATRIZ:
+Tiempo: O(n*L)
+Espacio: O(L)
+    El espacio ya esta reducido a 1 dimension por lo que no se podrÃ­a reducir mÃ¡s ya que necesitamos los valores de diversas longitudes
+
+*/
+
+
+
 void solve() {
 	int n, L;
 	while (cin >> n >> L) {
@@ -13,9 +50,9 @@ void solve() {
 		for (int i = 0; i < n; i++)
 			cin >> leghts[i] >> costs[i];
         // DP arrays
-        vector<long long> dp_ways(L + 1, 0); // número de formas de conseguir cada longitud
-        vector<int> dp_min_cords(L + 1, INT_MAX); // mínimo número de cordeles para cada longitud
-        vector<long long> dp_min_cost(L + 1, LLONG_MAX); // mínimo coste para cada longitud
+        vector<long long> dp_ways(L + 1, 0); // nï¿½mero de formas de conseguir cada longitud
+        vector<int> dp_min_cords(L + 1, INT_MAX); // mï¿½nimo nï¿½mero de cordeles para cada longitud
+        vector<long long> dp_min_cost(L + 1, LLONG_MAX); // mï¿½nimo coste para cada longitud
 
         // Inicializar para longitud 0
         dp_ways[0] = 1;
@@ -24,15 +61,15 @@ void solve() {
 
         for (int i = 0; i < n; i++) {
             for (int j = L; j >= leghts[i]; j--) {
-                // Actualizar número de formas
-                dp_ways[j] += dp_ways[j - leghts[i]]; // Al número de formas de llegar a j, se le suman el numero de formas de llegar a j - leghts[i]
+                // Actualizar nï¿½mero de formas
+                dp_ways[j] += dp_ways[j - leghts[i]]; // Al nï¿½mero de formas de llegar a j, se le suman el numero de formas de llegar a j - leghts[i]
 
-                // Actualizar mínimo número de cordeles
+                // Actualizar mï¿½nimo nï¿½mero de cordeles
                 if (dp_min_cords[j - leghts[i]] != INT_MAX) {
                     dp_min_cords[j] = min(dp_min_cords[j], dp_min_cords[j - leghts[i]] + 1); // se guarda el valor del numero minimo de cordeles necesarios para llegar a j
                 }
 
-                // Actualizar mínimo coste
+                // Actualizar mï¿½nimo coste
                 if (dp_min_cost[j - leghts[i]] != LLONG_MAX) {
                     dp_min_cost[j] = min(dp_min_cost[j], dp_min_cost[j - leghts[i]] + costs[i]);//Se guarda el valor del numero minimo de coste necesarios para llegar a j
                 }
