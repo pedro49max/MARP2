@@ -6,6 +6,49 @@
 #include <climits>
 using namespace std;
 
+
+/*
+RECURSION
+Parametros:
+    i es el index de la seccion
+    j es la puntuacion a la que se quiere llegar con esa seccion
+    dp_min_dards es el vector que guarda el numero minimo de secciones para llegar a la puntuacion j
+    backtrack es el vector que guarda la ultima seccion utilizada para legar a la puntuacion j
+Rangos:
+    las secciones van de la 0 a la S
+    los vectores solucion van del 0 a O+1
+Casos base: 
+    if (dp_min_dards[j - secciones[i]] == INT_MAX || dp_min_dards[j - secciones[i]] + 1 == dp_min_dards[j]) break;
+Casos recursivos:
+    if (dp_min_dards[j - secciones[i]] != INT_MAX && dp_min_dards[j - secciones[i]] + 1 <= dp_min_dards[j])
+        calculate vector values at j
+        j++
+
+*/
+/*
+IMPLEMENACION
+Iterativo: 
+    Como relleno el vector:
+        Primero itero por las secciones, de la 1 a la n, y despues con cada seccion voy iterndo desde
+        la puntuacion de la seccion hasta la puntuacion objectivo,  asi que voy rellenando de forma ascendente,
+        para asi poder tener el numero minimo de secciones para llegar a j, y aÃ±adir las secciones a backtrack
+*/
+/*
+COSTE DE RELLENADO DE LA MATRIZ:
+Tiempo: O(S*O)
+Espacio: O(O)
+    El espacio ya esta reducido a 1 dimension por lo que no se podrÃ­a reducir mÃ¡s ya que necesitamos los valores de diversas puntciones
+*/
+/*
+RECONSTRUCCION:
+Algoritmo:
+    Dado que ya tengo la resconstruccion en backtrack, el algoritmo consiste en iterar por backtrack, para ir sacando las secciones 
+    que se han ido utilizando, pues al tener gurdada backrack la ultima seccion, puedes iterar restamdo la puntuacion de esa seccion
+Coste: 
+    Tiempo:O(O)
+    Espacio: O(S)
+*/
+
 void solve() {
 	int O, S;
 	while (cin >> O >> S) {
@@ -13,23 +56,23 @@ void solve() {
 		for (int i = 0; i < S; i++) {
 			cin >> secciones[i];
 		}
-		vector<int> dp_min_dards(O + 1, INT_MAX); // mínimo número de dardos para cada puntuacion
-        vector<int> backtrack(O + 1, -1); // Para rastrear qué puntuación llevó al estado óptimo
+		vector<int> dp_min_dards(O + 1, INT_MAX); // mï¿½nimo nï¿½mero de dardos para cada puntuacion
+        vector<int> backtrack(O + 1, -1); // Para rastrear quï¿½ puntuaciï¿½n llevï¿½ al estado ï¿½ptimo
 
 
         // Inicializar para longitud 0
         dp_min_dards[0] = 0;
 
 
-        // Programación dinámica
+        // Programaciï¿½n dinï¿½mica
         for (int i = 0; i < S; ++i) {
             for (int j = secciones[i]; j <= O; ++j) {
                 if (dp_min_dards[j - secciones[i]] != INT_MAX && dp_min_dards[j - secciones[i]] + 1 <= dp_min_dards[j]) {
-                    // Actualizar si encontramos una solución más corta o igual
+                    // Actualizar si encontramos una soluciï¿½n mï¿½s corta o igual
                     if (dp_min_dards[j - secciones[i]] + 1 < dp_min_dards[j] ||
                         (backtrack[j - secciones[i]] != -1 && secciones[i] > secciones[backtrack[j]])) {
                         dp_min_dards[j] = dp_min_dards[j - secciones[i]] + 1;
-                        backtrack[j] = i; // Guardamos el índice de la puntuación usada
+                        backtrack[j] = i; // Guardamos el ï¿½ndice de la puntuaciï¿½n usada
                     }
                 }
             }

@@ -26,7 +26,7 @@ Casos recursivos:
 */
 /*
 IMPLEMENACION
-Recursivo: 
+Iterativo: 
     Como relleno el vector:
         Primero itero por los cordeles, del 1 al n, y despues con cada cordel voy iterndo desde
         el final de la longitud desada hasta la distancia del corel, para asi poder añadir al punto
