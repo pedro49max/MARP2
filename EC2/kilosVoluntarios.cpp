@@ -1,7 +1,3 @@
-//Pedro Tobalina Navarro y Jorge Polo Peires
-//DNI:71369690T y 06594921Q
-//GRUPO: 44
-
 #include <iostream>
 #include <fstream>
 #include <vector>
