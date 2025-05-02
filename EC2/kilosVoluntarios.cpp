@@ -80,12 +80,12 @@ void kilos_rp(vi const& pob, vvi const& vol, vi const& vol_max, const int l, int
 			X.kilos_est = kilos_est_opt(vol_max, X);
 			X.k++;
 			if (X.kilos_est >= best) {
-				if (X.k == n || X.completados == m) {
+				if ((X.k == n && X.completados >= l) || X.completados == m) {
 					best = X.kilos;
 					res = true;
 				}
 				else {
-					pq.push(X);
+					pq.push(X); 
 				}
 			}
 		}
@@ -93,7 +93,7 @@ void kilos_rp(vi const& pob, vvi const& vol, vi const& vol_max, const int l, int
 		Y.kilos_est = kilos_est_opt(vol_max, Y);
 		Y.k++;
 		if (Y.kilos_est >= best) {
-			if (Y.k == n || Y.completados == m) {
+			if ((Y.k == n && Y.completados >= l) || Y.completados == m) {
 				best = Y.kilos;
 				res = true;
 			}
@@ -120,8 +120,11 @@ void resuelveCaso()
 	vi vol_max(n, 0);
 
 	//Leemos las ayudas que necesitan las poblaciones
+	int completos = 0;
 	for (int i = 0; i < m; i++) {
 		cin >> poblaciones[i];
+		if (poblaciones[i] <= 0)
+			completos++;
 	}
 
 	//Leemos lo que pueden repartir los voluntarios
@@ -138,7 +141,7 @@ void resuelveCaso()
 	bool exito = false; //se hara cierto si es posible cubrir las necesidades completamente de al menos l poblaciones
 
 	//ALGORITMO DE RP
-	kilos_rp(poblaciones, voluntarios, vol_max, l, mejorAyuda, exito);
+	kilos_rp(poblaciones, voluntarios, vol_max, l - completos, mejorAyuda, exito);
 
 
 	if (exito)
@@ -159,7 +162,7 @@ void resuelveCaso()
 int main() {
 	// ajuste para que cin extraiga directamente de un fichero
 #ifndef DOMJUDGE
-	std::ifstream in("in.txt");
+	std::ifstream in("in2.txt");
 	auto cinbuf = std::cin.rdbuf(in.rdbuf());
 #endif
 
